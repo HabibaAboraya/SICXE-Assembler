@@ -1,0 +1,317 @@
+<html>
+<head>
+<title>Main.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cf8e6d;}
+.s1 { color: #bcbec4;}
+.s2 { color: #bcbec4;}
+.s3 { color: #6aab73;}
+.s4 { color: #7a7e85;}
+.s5 { color: #2aacb8;}
+</style>
+</head>
+<body bgcolor="#1e1f22">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+Main.java</font>
+</center></td></tr></table>
+<pre><span class="s0">import </span><span class="s1">java</span><span class="s2">.</span><span class="s1">io</span><span class="s2">.</span><span class="s1">File</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">java</span><span class="s2">.</span><span class="s1">io</span><span class="s2">.</span><span class="s1">FileNotFoundException</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">java</span><span class="s2">.</span><span class="s1">util</span><span class="s2">.</span><span class="s1">Scanner</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">java</span><span class="s2">.</span><span class="s1">util</span><span class="s2">.</span><span class="s1">ArrayList</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">java</span><span class="s2">.</span><span class="s1">util</span><span class="s2">.</span><span class="s1">List</span><span class="s2">;</span>
+
+<span class="s0">public class </span><span class="s1">Main </span><span class="s2">{</span>
+   <span class="s0">private static </span><span class="s1">List</span><span class="s2">&lt;</span><span class="s1">String</span><span class="s2">&gt; </span><span class="s1">labels </span><span class="s2">= </span><span class="s0">new </span><span class="s1">ArrayList</span><span class="s2">&lt;&gt;();</span>
+
+    <span class="s0">private static </span><span class="s1">List</span><span class="s2">&lt;</span><span class="s1">String</span><span class="s2">&gt; </span><span class="s1">instructions </span><span class="s2">= </span><span class="s0">new </span><span class="s1">ArrayList</span><span class="s2">&lt;&gt;();</span>
+
+    <span class="s0">private static </span><span class="s1">List</span><span class="s2">&lt;</span><span class="s1">String</span><span class="s2">&gt; </span><span class="s1">references </span><span class="s2">= </span><span class="s0">new </span><span class="s1">ArrayList</span><span class="s2">&lt;&gt;();</span>
+
+    <span class="s0">private static </span><span class="s1">List</span><span class="s2">&lt;</span><span class="s1">String</span><span class="s2">&gt; </span><span class="s1">locationCounter </span><span class="s2">= </span><span class="s0">new </span><span class="s1">ArrayList</span><span class="s2">&lt;&gt;();</span>
+
+    <span class="s0">private static </span><span class="s1">List</span><span class="s2">&lt;</span><span class="s1">String</span><span class="s2">&gt; </span><span class="s1">objectCode </span><span class="s2">= </span><span class="s0">new </span><span class="s1">ArrayList</span><span class="s2">&lt;&gt;();</span>
+
+    <span class="s0">public static void </span><span class="s1">main</span><span class="s2">(</span><span class="s1">String</span><span class="s2">[] </span><span class="s1">args</span><span class="s2">) {</span>
+
+        <span class="s1">Converter</span><span class="s2">.</span><span class="s1">initialize</span><span class="s2">();</span>
+
+        <span class="s1">readFile</span><span class="s2">(</span><span class="s3">&quot;/Users/habibaaboraya/Downloads/inSICXE.txt&quot;</span><span class="s2">);</span>
+
+        <span class="s1">printFile</span><span class="s2">();</span>
+
+        <span class="s1">pass1</span><span class="s2">();</span>
+
+        <span class="s1">printSymbolTable</span><span class="s2">();</span>
+
+        <span class="s1">calculateObjectCode</span><span class="s2">();</span>
+
+        <span class="s1">printObjectCodes</span><span class="s2">();</span>
+
+    <span class="s2">}</span>
+
+    <span class="s4">// A function to read file</span>
+    <span class="s0">public static void </span><span class="s1">readFile</span><span class="s2">(</span><span class="s1">String fileName</span><span class="s2">) {</span>
+
+        <span class="s0">try </span><span class="s2">{</span>
+
+            <span class="s1">File file </span><span class="s2">= </span><span class="s0">new </span><span class="s1">File</span><span class="s2">(</span><span class="s1">fileName</span><span class="s2">);</span>
+
+            <span class="s1">Scanner scanner </span><span class="s2">= </span><span class="s0">new </span><span class="s1">Scanner</span><span class="s2">(</span><span class="s1">file</span><span class="s2">);</span>
+
+            <span class="s4">// Read the file line by line</span>
+            <span class="s0">while </span><span class="s2">(</span><span class="s1">scanner</span><span class="s2">.</span><span class="s1">hasNextLine</span><span class="s2">()) {</span>
+
+                <span class="s1">String line </span><span class="s2">= </span><span class="s1">scanner</span><span class="s2">.</span><span class="s1">nextLine</span><span class="s2">().</span><span class="s1">trim</span><span class="s2">();</span>
+
+                <span class="s1">String</span><span class="s2">[] </span><span class="s1">arr </span><span class="s2">= </span><span class="s1">line</span><span class="s2">.</span><span class="s1">split</span><span class="s2">(</span><span class="s3">&quot;</span><span class="s0">\\</span><span class="s3">s+&quot;</span><span class="s2">); </span><span class="s4">// Split by spaces</span>
+
+                <span class="s0">if </span><span class="s2">(</span><span class="s1">arr</span><span class="s2">.</span><span class="s1">length </span><span class="s2">== </span><span class="s5">3</span><span class="s2">) {</span>
+
+                    <span class="s1">labels</span><span class="s2">.</span><span class="s1">add</span><span class="s2">(</span><span class="s1">arr</span><span class="s2">[</span><span class="s5">0</span><span class="s2">]);</span>
+
+                    <span class="s1">instructions</span><span class="s2">.</span><span class="s1">add</span><span class="s2">(</span><span class="s1">arr</span><span class="s2">[</span><span class="s5">1</span><span class="s2">]);</span>
+
+                    <span class="s1">references</span><span class="s2">.</span><span class="s1">add</span><span class="s2">(</span><span class="s1">arr</span><span class="s2">[</span><span class="s5">2</span><span class="s2">]);</span>
+
+                <span class="s2">}</span>
+
+                <span class="s0">else if </span><span class="s2">(</span><span class="s1">arr</span><span class="s2">.</span><span class="s1">length </span><span class="s2">== </span><span class="s5">2</span><span class="s2">) {</span>
+
+                    <span class="s1">labels</span><span class="s2">.</span><span class="s1">add</span><span class="s2">(</span><span class="s3">&quot;$$$$$&quot;</span><span class="s2">); </span><span class="s4">// Placeholder for no label</span>
+
+                    <span class="s1">instructions</span><span class="s2">.</span><span class="s1">add</span><span class="s2">(</span><span class="s1">arr</span><span class="s2">[</span><span class="s5">0</span><span class="s2">]);</span>
+
+                    <span class="s1">references</span><span class="s2">.</span><span class="s1">add</span><span class="s2">(</span><span class="s1">arr</span><span class="s2">[</span><span class="s5">1</span><span class="s2">]);</span>
+
+                <span class="s2">}</span>
+
+            <span class="s2">}</span>
+
+            <span class="s1">scanner</span><span class="s2">.</span><span class="s1">close</span><span class="s2">();</span>
+
+        <span class="s2">} </span><span class="s0">catch </span><span class="s2">(</span><span class="s1">FileNotFoundException e</span><span class="s2">) {</span>
+
+            <span class="s1">System</span><span class="s2">.</span><span class="s1">out</span><span class="s2">.</span><span class="s1">println</span><span class="s2">(</span><span class="s3">&quot;File not found: &quot; </span><span class="s2">+ </span><span class="s1">e</span><span class="s2">.</span><span class="s1">getMessage</span><span class="s2">());</span>
+
+        <span class="s2">}</span>
+
+    <span class="s2">}</span>
+
+    <span class="s4">//A function to Print file</span>
+    <span class="s0">public static void </span><span class="s1">printFile</span><span class="s2">() {</span>
+
+        <span class="s1">System</span><span class="s2">.</span><span class="s1">out</span><span class="s2">.</span><span class="s1">println</span><span class="s2">(</span><span class="s3">&quot;File Content:&quot;</span><span class="s2">);</span>
+
+        <span class="s1">System</span><span class="s2">.</span><span class="s1">out</span><span class="s2">.</span><span class="s1">printf</span><span class="s2">(</span><span class="s3">&quot;%-10s %-15s %-15s %n&quot;</span><span class="s2">, </span><span class="s3">&quot;Labels&quot;</span><span class="s2">, </span><span class="s3">&quot;Instructions&quot;</span><span class="s2">, </span><span class="s3">&quot;References&quot;</span><span class="s2">);</span>
+
+        <span class="s0">for </span><span class="s2">(</span><span class="s0">int </span><span class="s1">j </span><span class="s2">= </span><span class="s5">0</span><span class="s2">; </span><span class="s1">j </span><span class="s2">&lt; </span><span class="s1">instructions</span><span class="s2">.</span><span class="s1">size</span><span class="s2">(); </span><span class="s1">j</span><span class="s2">++) {</span>
+
+            <span class="s1">System</span><span class="s2">.</span><span class="s1">out</span><span class="s2">.</span><span class="s1">printf</span><span class="s2">(</span><span class="s3">&quot;%-10s %-15s %-15s %n&quot;</span><span class="s2">, </span><span class="s1">labels</span><span class="s2">.</span><span class="s1">get</span><span class="s2">(</span><span class="s1">j</span><span class="s2">), </span><span class="s1">instructions</span><span class="s2">.</span><span class="s1">get</span><span class="s2">(</span><span class="s1">j</span><span class="s2">), </span><span class="s1">references</span><span class="s2">.</span><span class="s1">get</span><span class="s2">(</span><span class="s1">j</span><span class="s2">));</span>
+
+        <span class="s2">}</span>
+
+    <span class="s2">}</span>
+
+
+    <span class="s4">//A function to calculate location counter and print symbol table</span>
+    <span class="s0">public static void </span><span class="s1">pass1</span><span class="s2">() {</span>
+
+        <span class="s0">if </span><span class="s2">(</span><span class="s1">references</span><span class="s2">.</span><span class="s1">isEmpty</span><span class="s2">()) {</span>
+
+            <span class="s1">System</span><span class="s2">.</span><span class="s1">out</span><span class="s2">.</span><span class="s1">println</span><span class="s2">(</span><span class="s3">&quot;No references found to process.&quot;</span><span class="s2">);</span>
+
+            <span class="s0">return</span><span class="s2">;</span>
+
+        <span class="s2">}</span>
+
+        <span class="s1">locationCounter</span><span class="s2">.</span><span class="s1">add</span><span class="s2">(</span><span class="s1">String</span><span class="s2">.</span><span class="s1">format</span><span class="s2">(</span><span class="s3">&quot;%04X&quot;</span><span class="s2">, </span><span class="s1">Integer</span><span class="s2">.</span><span class="s1">parseInt</span><span class="s2">(</span><span class="s1">references</span><span class="s2">.</span><span class="s1">get</span><span class="s2">(</span><span class="s5">0</span><span class="s2">), </span><span class="s5">16</span><span class="s2">)));</span><span class="s4">//location counter [0]</span>
+
+        <span class="s1">locationCounter</span><span class="s2">.</span><span class="s1">add</span><span class="s2">(</span><span class="s1">String</span><span class="s2">.</span><span class="s1">format</span><span class="s2">(</span><span class="s3">&quot;%04X&quot;</span><span class="s2">, </span><span class="s1">Integer</span><span class="s2">.</span><span class="s1">parseInt</span><span class="s2">(</span><span class="s1">references</span><span class="s2">.</span><span class="s1">get</span><span class="s2">(</span><span class="s5">0</span><span class="s2">), </span><span class="s5">16</span><span class="s2">)));</span><span class="s4">//location counter [1]</span>
+
+
+
+        <span class="s0">for </span><span class="s2">(</span><span class="s0">int </span><span class="s1">i </span><span class="s2">= </span><span class="s5">0</span><span class="s2">; </span><span class="s1">i </span><span class="s2">&lt; </span><span class="s1">instructions</span><span class="s2">.</span><span class="s1">size</span><span class="s2">(); </span><span class="s1">i</span><span class="s2">++) {</span>
+
+            <span class="s0">int </span><span class="s1">prevLoc </span><span class="s2">= </span><span class="s1">Integer</span><span class="s2">.</span><span class="s1">parseInt</span><span class="s2">(</span><span class="s1">locationCounter</span><span class="s2">.</span><span class="s1">get</span><span class="s2">(</span><span class="s1">i</span><span class="s2">), </span><span class="s5">16</span><span class="s2">);</span>
+
+            <span class="s1">String instr </span><span class="s2">= </span><span class="s1">instructions</span><span class="s2">.</span><span class="s1">get</span><span class="s2">(</span><span class="s1">i</span><span class="s2">);</span>
+
+            <span class="s1">String ref </span><span class="s2">= </span><span class="s1">references</span><span class="s2">.</span><span class="s1">get</span><span class="s2">(</span><span class="s1">i</span><span class="s2">);</span>
+
+            <span class="s1">String format </span><span class="s2">= </span><span class="s1">Converter</span><span class="s2">.</span><span class="s1">getFormat</span><span class="s2">(</span><span class="s1">instr</span><span class="s2">);</span>
+
+
+            <span class="s0">if </span><span class="s2">(</span><span class="s1">format</span><span class="s2">.</span><span class="s1">equals</span><span class="s2">(</span><span class="s3">&quot;1&quot;</span><span class="s2">)) {</span>
+
+                <span class="s1">locationCounter</span><span class="s2">.</span><span class="s1">add</span><span class="s2">(</span><span class="s1">String</span><span class="s2">.</span><span class="s1">format</span><span class="s2">(</span><span class="s3">&quot;%04X&quot;</span><span class="s2">, </span><span class="s1">prevLoc </span><span class="s2">+ </span><span class="s5">1</span><span class="s2">));</span>
+
+            <span class="s2">} </span><span class="s0">else if </span><span class="s2">(</span><span class="s1">format</span><span class="s2">.</span><span class="s1">equals</span><span class="s2">(</span><span class="s3">&quot;2&quot;</span><span class="s2">)) {</span>
+
+                <span class="s1">locationCounter</span><span class="s2">.</span><span class="s1">add</span><span class="s2">(</span><span class="s1">String</span><span class="s2">.</span><span class="s1">format</span><span class="s2">(</span><span class="s3">&quot;%04X&quot;</span><span class="s2">, </span><span class="s1">prevLoc </span><span class="s2">+ </span><span class="s5">2</span><span class="s2">));</span>
+
+            <span class="s2">} </span><span class="s0">else if </span><span class="s2">(</span><span class="s1">format</span><span class="s2">.</span><span class="s1">equals</span><span class="s2">(</span><span class="s3">&quot;3&quot;</span><span class="s2">)) {</span>
+
+                <span class="s1">locationCounter</span><span class="s2">.</span><span class="s1">add</span><span class="s2">(</span><span class="s1">String</span><span class="s2">.</span><span class="s1">format</span><span class="s2">(</span><span class="s3">&quot;%04X&quot;</span><span class="s2">, </span><span class="s1">prevLoc </span><span class="s2">+ </span><span class="s5">3</span><span class="s2">));</span>
+
+            <span class="s2">}</span>
+
+            <span class="s0">else if </span><span class="s2">(</span><span class="s1">instr</span><span class="s2">.</span><span class="s1">equals</span><span class="s2">(</span><span class="s3">&quot;BYTE&quot;</span><span class="s2">)) {</span>
+
+                <span class="s0">int </span><span class="s1">length</span><span class="s2">;</span>
+
+                <span class="s0">if </span><span class="s2">(</span><span class="s1">ref</span><span class="s2">.</span><span class="s1">startsWith</span><span class="s2">(</span><span class="s3">&quot;X&quot;</span><span class="s2">)) {</span>
+
+                    <span class="s1">length </span><span class="s2">= (</span><span class="s1">ref</span><span class="s2">.</span><span class="s1">length</span><span class="s2">() - </span><span class="s5">3</span><span class="s2">) / </span><span class="s5">2</span><span class="s2">;</span>
+
+                <span class="s2">}</span>
+
+                <span class="s0">else </span><span class="s2">{</span>
+
+                    <span class="s1">length </span><span class="s2">= </span><span class="s1">ref</span><span class="s2">.</span><span class="s1">length</span><span class="s2">() - </span><span class="s5">3</span><span class="s2">;</span>
+
+                <span class="s2">}</span>
+
+                <span class="s1">locationCounter</span><span class="s2">.</span><span class="s1">add</span><span class="s2">(</span><span class="s1">String</span><span class="s2">.</span><span class="s1">format</span><span class="s2">(</span><span class="s3">&quot;%04X&quot;</span><span class="s2">, </span><span class="s1">prevLoc </span><span class="s2">+ </span><span class="s1">length</span><span class="s2">));</span>
+
+            <span class="s2">}</span>
+
+            <span class="s0">else if </span><span class="s2">(</span><span class="s1">instr</span><span class="s2">.</span><span class="s1">equals</span><span class="s2">(</span><span class="s3">&quot;RESB&quot;</span><span class="s2">)) {</span>
+
+                <span class="s1">locationCounter</span><span class="s2">.</span><span class="s1">add</span><span class="s2">(</span><span class="s1">String</span><span class="s2">.</span><span class="s1">format</span><span class="s2">(</span><span class="s3">&quot;%04X&quot;</span><span class="s2">, </span><span class="s1">prevLoc </span><span class="s2">+ </span><span class="s1">Integer</span><span class="s2">.</span><span class="s1">parseInt</span><span class="s2">(</span><span class="s1">ref</span><span class="s2">)));</span>
+
+            <span class="s2">}</span>
+
+            <span class="s0">else if </span><span class="s2">(</span><span class="s1">instr</span><span class="s2">.</span><span class="s1">equals</span><span class="s2">(</span><span class="s3">&quot;RESW&quot;</span><span class="s2">)) {</span>
+
+                <span class="s1">locationCounter</span><span class="s2">.</span><span class="s1">add</span><span class="s2">(</span><span class="s1">String</span><span class="s2">.</span><span class="s1">format</span><span class="s2">(</span><span class="s3">&quot;%04X&quot;</span><span class="s2">, </span><span class="s1">prevLoc </span><span class="s2">+ </span><span class="s1">Integer</span><span class="s2">.</span><span class="s1">parseInt</span><span class="s2">(</span><span class="s1">ref</span><span class="s2">) * </span><span class="s5">3</span><span class="s2">));</span>
+
+            <span class="s2">}</span>
+            <span class="s0">else if </span><span class="s2">(</span><span class="s1">instr</span><span class="s2">.</span><span class="s1">equals</span><span class="s2">(</span><span class="s3">&quot;WORD&quot;</span><span class="s2">)) {</span>
+
+                <span class="s1">locationCounter</span><span class="s2">.</span><span class="s1">add</span><span class="s2">(</span><span class="s1">String</span><span class="s2">.</span><span class="s1">format</span><span class="s2">(</span><span class="s3">&quot;%04X&quot;</span><span class="s2">, </span><span class="s1">prevLoc </span><span class="s2">+ </span><span class="s5">3</span><span class="s2">));</span>
+
+            <span class="s2">}</span>
+            <span class="s0">else if </span><span class="s2">(</span><span class="s1">instr</span><span class="s2">.</span><span class="s1">startsWith</span><span class="s2">(</span><span class="s3">&quot;+&quot;</span><span class="s2">)) {</span>
+
+                <span class="s1">locationCounter</span><span class="s2">.</span><span class="s1">add</span><span class="s2">(</span><span class="s1">String</span><span class="s2">.</span><span class="s1">format</span><span class="s2">(</span><span class="s3">&quot;%04X&quot;</span><span class="s2">, </span><span class="s1">prevLoc </span><span class="s2">+ </span><span class="s5">4</span><span class="s2">));</span>
+
+            <span class="s2">}</span>
+            <span class="s0">else if</span><span class="s2">(</span><span class="s1">instr</span><span class="s2">.</span><span class="s1">equals</span><span class="s2">(</span><span class="s3">&quot;BASE&quot;</span><span class="s2">)){</span>
+
+                <span class="s1">locationCounter</span><span class="s2">.</span><span class="s1">add</span><span class="s2">(</span><span class="s1">String</span><span class="s2">.</span><span class="s1">format</span><span class="s2">(</span><span class="s3">&quot;%04X&quot;</span><span class="s2">, </span><span class="s1">prevLoc</span><span class="s2">));</span>
+
+            <span class="s2">}</span>
+
+        <span class="s2">}</span>
+
+        <span class="s4">// Print the results for pass1</span>
+        <span class="s1">System</span><span class="s2">.</span><span class="s1">out</span><span class="s2">.</span><span class="s1">println</span><span class="s2">(</span><span class="s3">&quot;---------------------------------------------&quot;</span><span class="s2">);</span>
+
+        <span class="s1">System</span><span class="s2">.</span><span class="s1">out</span><span class="s2">.</span><span class="s1">println</span><span class="s2">(</span><span class="s3">&quot;pass1:&quot;</span><span class="s2">);</span>
+
+        <span class="s1">System</span><span class="s2">.</span><span class="s1">out</span><span class="s2">.</span><span class="s1">printf</span><span class="s2">(</span><span class="s3">&quot;%-10s %-15s %-15s %-15s %n&quot;</span><span class="s2">, </span><span class="s3">&quot;LocCtr&quot;</span><span class="s2">, </span><span class="s3">&quot;Labels&quot;</span><span class="s2">, </span><span class="s3">&quot;Instructions&quot;</span><span class="s2">, </span><span class="s3">&quot;References&quot;</span><span class="s2">);</span>
+
+        <span class="s0">for </span><span class="s2">(</span><span class="s0">int </span><span class="s1">i </span><span class="s2">= </span><span class="s5">0</span><span class="s2">; </span><span class="s1">i </span><span class="s2">&lt; </span><span class="s1">instructions</span><span class="s2">.</span><span class="s1">size</span><span class="s2">(); </span><span class="s1">i</span><span class="s2">++) {</span>
+
+            <span class="s1">System</span><span class="s2">.</span><span class="s1">out</span><span class="s2">.</span><span class="s1">printf</span><span class="s2">(</span><span class="s3">&quot;%-10s %-15s %-15s %-15s %n&quot;</span><span class="s2">, </span><span class="s1">locationCounter</span><span class="s2">.</span><span class="s1">get</span><span class="s2">(</span><span class="s1">i</span><span class="s2">), </span><span class="s1">labels</span><span class="s2">.</span><span class="s1">get</span><span class="s2">(</span><span class="s1">i</span><span class="s2">), </span><span class="s1">instructions</span><span class="s2">.</span><span class="s1">get</span><span class="s2">(</span><span class="s1">i</span><span class="s2">), </span><span class="s1">references</span><span class="s2">.</span><span class="s1">get</span><span class="s2">(</span><span class="s1">i</span><span class="s2">));</span>
+
+        <span class="s2">}</span>
+
+    <span class="s2">}</span>
+
+    <span class="s4">//A function to print symbol table and length</span>
+        <span class="s0">public static void </span><span class="s1">printSymbolTable</span><span class="s2">() {</span>
+
+            <span class="s0">if </span><span class="s2">(</span><span class="s1">locationCounter</span><span class="s2">.</span><span class="s1">size</span><span class="s2">() == </span><span class="s5">0</span><span class="s2">) {</span>
+
+                <span class="s1">System</span><span class="s2">.</span><span class="s1">out</span><span class="s2">.</span><span class="s1">println</span><span class="s2">(</span><span class="s3">&quot;No location counters available.&quot;</span><span class="s2">);</span>
+
+                <span class="s0">return</span><span class="s2">;</span>
+
+            <span class="s2">}</span>
+            <span class="s0">int </span><span class="s1">firstLoc </span><span class="s2">= </span><span class="s1">Integer</span><span class="s2">.</span><span class="s1">parseInt</span><span class="s2">(</span><span class="s1">locationCounter</span><span class="s2">.</span><span class="s1">get</span><span class="s2">(</span><span class="s5">0</span><span class="s2">), </span><span class="s5">16</span><span class="s2">); </span><span class="s4">// First location counter</span>
+
+            <span class="s0">int </span><span class="s1">lastLoc </span><span class="s2">= </span><span class="s1">Integer</span><span class="s2">.</span><span class="s1">parseInt</span><span class="s2">(</span><span class="s1">locationCounter</span><span class="s2">.</span><span class="s1">get</span><span class="s2">(</span><span class="s1">locationCounter</span><span class="s2">.</span><span class="s1">size</span><span class="s2">() - </span><span class="s5">1</span><span class="s2">), </span><span class="s5">16</span><span class="s2">); </span><span class="s4">// Last location counter</span>
+
+            <span class="s0">int </span><span class="s1">programLength </span><span class="s2">= </span><span class="s1">lastLoc </span><span class="s2">- </span><span class="s1">firstLoc</span><span class="s2">;</span>
+
+            <span class="s4">// Convert the program length to hexadecimal</span>
+            <span class="s1">String programLengthHex </span><span class="s2">= </span><span class="s1">Integer</span><span class="s2">.</span><span class="s1">toHexString</span><span class="s2">(</span><span class="s1">programLength</span><span class="s2">).</span><span class="s1">toUpperCase</span><span class="s2">(); </span><span class="s4">// Convert to hex and make uppercase</span>
+
+
+            <span class="s1">System</span><span class="s2">.</span><span class="s1">out</span><span class="s2">.</span><span class="s1">println</span><span class="s2">(</span><span class="s3">&quot;---------------------------------------------&quot;</span><span class="s2">);</span>
+
+            <span class="s1">System</span><span class="s2">.</span><span class="s1">out</span><span class="s2">.</span><span class="s1">println</span><span class="s2">(</span><span class="s3">&quot;Symbol Table&quot;</span><span class="s2">);</span>
+
+            <span class="s1">System</span><span class="s2">.</span><span class="s1">out</span><span class="s2">.</span><span class="s1">printf</span><span class="s2">(</span><span class="s3">&quot;%-10s %-15s %n&quot;</span><span class="s2">, </span><span class="s3">&quot;Labels&quot;</span><span class="s2">, </span><span class="s3">&quot;Location Counter&quot;</span><span class="s2">);</span>
+
+            <span class="s0">for </span><span class="s2">(</span><span class="s0">int </span><span class="s1">i </span><span class="s2">= </span><span class="s5">0</span><span class="s2">; </span><span class="s1">i </span><span class="s2">&lt; </span><span class="s1">labels</span><span class="s2">.</span><span class="s1">size</span><span class="s2">(); </span><span class="s1">i</span><span class="s2">++) {</span>
+
+                <span class="s0">if </span><span class="s2">(!</span><span class="s1">labels</span><span class="s2">.</span><span class="s1">get</span><span class="s2">(</span><span class="s1">i</span><span class="s2">).</span><span class="s1">equals</span><span class="s2">(</span><span class="s3">&quot;$$$$$&quot;</span><span class="s2">)) {</span>
+
+                    <span class="s1">System</span><span class="s2">.</span><span class="s1">out</span><span class="s2">.</span><span class="s1">printf</span><span class="s2">(</span><span class="s3">&quot;%-10s %-15s %n&quot;</span><span class="s2">, </span><span class="s1">labels</span><span class="s2">.</span><span class="s1">get</span><span class="s2">(</span><span class="s1">i</span><span class="s2">), </span><span class="s1">locationCounter</span><span class="s2">.</span><span class="s1">get</span><span class="s2">(</span><span class="s1">i</span><span class="s2">));</span>
+
+                <span class="s2">}</span>
+
+            <span class="s2">}</span>
+
+            <span class="s1">System</span><span class="s2">.</span><span class="s1">out</span><span class="s2">.</span><span class="s1">println</span><span class="s2">(</span><span class="s3">&quot;Program Length: &quot; </span><span class="s2">+</span><span class="s1">programLengthHex</span><span class="s2">);</span>
+        <span class="s2">}</span>
+
+    <span class="s4">//A function to get object code</span>
+    <span class="s0">public static void </span><span class="s1">calculateObjectCode</span><span class="s2">() {</span>
+        <span class="s1">objectCode</span><span class="s2">.</span><span class="s1">add</span><span class="s2">(</span><span class="s3">&quot;     &quot;</span><span class="s2">);</span>
+
+
+        <span class="s0">for </span><span class="s2">(</span><span class="s0">int </span><span class="s1">i </span><span class="s2">= </span><span class="s5">0</span><span class="s2">; </span><span class="s1">i </span><span class="s2">&lt; </span><span class="s1">instructions</span><span class="s2">.</span><span class="s1">size</span><span class="s2">(); </span><span class="s1">i</span><span class="s2">++) {</span>
+
+            <span class="s1">String instr </span><span class="s2">= </span><span class="s1">instructions</span><span class="s2">.</span><span class="s1">get</span><span class="s2">(</span><span class="s1">i</span><span class="s2">);</span>
+            <span class="s1">String format </span><span class="s2">= </span><span class="s1">Converter</span><span class="s2">.</span><span class="s1">getFormat</span><span class="s2">(</span><span class="s1">instr</span><span class="s2">);</span>
+            <span class="s1">String opcode </span><span class="s2">= </span><span class="s1">Converter</span><span class="s2">.</span><span class="s1">getOpcode</span><span class="s2">(</span><span class="s1">instr</span><span class="s2">);</span>
+
+
+            <span class="s0">if </span><span class="s2">(</span><span class="s1">format</span><span class="s2">.</span><span class="s1">equals</span><span class="s2">(</span><span class="s3">&quot;1&quot;</span><span class="s2">)) {</span>
+
+                <span class="s1">objectCode</span><span class="s2">.</span><span class="s1">add</span><span class="s2">(</span><span class="s1">String</span><span class="s2">.</span><span class="s1">format</span><span class="s2">(</span><span class="s3">&quot;%04X&quot;</span><span class="s2">, </span><span class="s1">Integer</span><span class="s2">.</span><span class="s1">parseInt</span><span class="s2">(</span><span class="s1">opcode</span><span class="s2">, </span><span class="s5">16</span><span class="s2">)));</span>
+            <span class="s2">}</span>
+
+           <span class="s4">/* else if (format.equals(&quot;2&quot;)) { 
+                String operands = references.get(i); 
+                String[] registerOperands = operands.split(&quot;,&quot;); 
+ 
+                String reg1 = registerOperands[0]; 
+                String reg2 = registerOperands.length &gt; 1 ? registerOperands[1] : &quot;&quot;; 
+ 
+ 
+                String regCode1 = Registers.getRegisterHex(reg1); 
+                String regCode2 = !reg2.isEmpty() ? Registers.getRegisterHex(reg2) : &quot;00&quot;; 
+ 
+                // Combine the opcode and register codes to form the object code for Format 2. 
+                String oc = String.format(&quot;%04X&quot;, Integer.parseInt(opcode, 16)) + regCode1 + regCode2; 
+ 
+                objectCode.add(oc); // Add the final object code for Format 2. 
+            }*/</span>
+        <span class="s2">}</span>
+    <span class="s2">}</span>
+    <span class="s0">public static void </span><span class="s1">printObjectCodes</span><span class="s2">() {</span>
+        <span class="s1">System</span><span class="s2">.</span><span class="s1">out</span><span class="s2">.</span><span class="s1">println</span><span class="s2">(</span><span class="s3">&quot;Object Codes:&quot;</span><span class="s2">);</span>
+        <span class="s0">for </span><span class="s2">(</span><span class="s0">int </span><span class="s1">i </span><span class="s2">= </span><span class="s5">0</span><span class="s2">; </span><span class="s1">i </span><span class="s2">&lt; </span><span class="s1">instructions</span><span class="s2">.</span><span class="s1">size</span><span class="s2">(); </span><span class="s1">i</span><span class="s2">++) {</span>
+
+            <span class="s1">System</span><span class="s2">.</span><span class="s1">out</span><span class="s2">.</span><span class="s1">printf</span><span class="s2">(</span><span class="s3">&quot;%-10s %n&quot;</span><span class="s2">, </span><span class="s1">objectCode</span><span class="s2">.</span><span class="s1">get</span><span class="s2">(</span><span class="s1">i</span><span class="s2">));</span>
+        <span class="s2">}</span>
+    <span class="s2">}</span>
+<span class="s2">}</span>
+
+
+
+
+
+
+
+
+</pre>
+</body>
+</html>
